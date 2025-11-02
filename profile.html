@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Profile</title>
+  <link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Your Profile</h1>
+    <p id="usernameDisplay"></p>
+    <button id="logoutBtn">Logout</button>
+    <button id="backBtn">Back</button>
+  </div>
+
+  <script>
+    const username = localStorage.getItem("loggedInUser");
+    const usernameDisplay = document.getElementById("usernameDisplay");
+
+    if (!username) {
+      window.location.href = "/index";
+    } else {
+      usernameDisplay.textContent = "Logged in as: " + username;
+    }
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.removeItem("loggedInUser");
+      window.location.href = "/index";
+    });
+
+    document.getElementById("backBtn").addEventListener("click", () => {
+      window.location.href = "/sender";
+    });
+  </script>
+</body>
+</html>

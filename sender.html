@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Send WhatsApp Message</title>
+  <link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" class="whatsapp-logo" alt="WhatsApp" />
+      WhatsApp Sender
+    </h1>
+
+    <div class="input-group">
+      <input type="text" id="phone" required />
+      <label for="phone">Phone Number</label>
+    </div>
+
+    <div class="input-group">
+      <select id="preset"></select>
+      <label for="preset">Preset Message</label>
+    </div>
+
+    <div class="input-group">
+      <textarea id="message"></textarea>
+      <label for="message">Message (optional)</label>
+    </div>
+
+    <div class="btn-group">
+      <button id="sendBtn">Send WhatsApp</button>
+      <button id="profileBtn">Profile</button>
+    </div>
+
+    <div class="custom-message">
+      <input type="text" id="newMessage" placeholder="Add custom message" />
+      <button id="saveMessageBtn">Save</button>
+    </div>
+  </div>
+
+  <script src="src/sender.js"></script>
+</body>
+</html>

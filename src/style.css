@@ -1,0 +1,48 @@
+﻿.whatsapp-logo {
+  height: 40px;
+  margin-right: 10px;
+  animation: bounce 1s infinite alternate;
+  vertical-align: middle;
+}
+
+@keyframes bounce {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0); }
+}
+
+/* Fix floating label on select when value is selected */
+select:focus + label,
+select.filled + label {
+  top: -10px;
+  left: 12px;
+  font-size: 0.8rem;
+  color: #25d366;
+  background: white;
+  padding: 0 4px;
+}
+
+/* Add edit/delete buttons for saved messages */
+.saved-message {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 10px;
+  margin-bottom: 6px;
+  background: #f1f1f1;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.saved-message button {
+  padding: 4px 6px;
+  font-size: 0.8rem;
+  margin-left: 5px;
+  background: #128c7e;
+  color: #fff;
+  border-radius: 6px;
+}
+
+.saved-message button:hover {
+  background: #075e54;
+}
