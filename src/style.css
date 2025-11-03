@@ -42,14 +42,12 @@
 
 /* independent logo element (not tied to .container) */
 .logo {
-  
   height: 56px;
-  background: url('../assets/whatsapp.png') no-repeat center/contain;
-  
-  
+  background: url('./assets/whatsapp.png') no-repeat center/contain;
   margin: -36px auto 8px; /* pulls the logo above the title and slightly out of the container */
   display: block;
   pointer-events: none;
+  animation: bounce 1.5s infinite;
 }
 
 h1 {
