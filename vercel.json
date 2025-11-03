@@ -1,10 +1,8 @@
-
 {
+  "outputDirectory": ".",
   "rewrites": [
     { "source": "/", "destination": "/index.html" },
     { "source": "/sender", "destination": "/sender.html" },
-    { "source": "/profile", "destination": "/profile.html" },
-    { "source": "/sender.html", "destination": "/sender.html" },
-    { "source": "/profile.html", "destination": "/profile.html" }
+    { "source": "/profile", "destination": "/profile.html" }
   ]
 }
