@@ -21,7 +21,8 @@
     "url": "https://github.com/salesdtfnow-bit/whatsapp-sender-advance/issues"
   },
   "homepage": "https://github.com/salesdtfnow-bit/whatsapp-sender-advance#readme",
-  "devDependencies": {
+  "dependencies": {
     "vite": "^7.1.12"
-  }
+  },
+  "devDependencies": {}
 }
