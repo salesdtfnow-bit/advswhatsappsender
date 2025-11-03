@@ -42,11 +42,11 @@
 
 /* independent logo element (not tied to .container) */
 .logo {
-  width: 56px;
+  
   height: 56px;
   background: url('../assets/whatsapp.png') no-repeat center/contain;
-  border-radius: 50%;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  
+  
   margin: -36px auto 8px; /* pulls the logo above the title and slightly out of the container */
   display: block;
   pointer-events: none;
