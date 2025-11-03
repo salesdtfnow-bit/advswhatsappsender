@@ -19,35 +19,25 @@
   position: relative;
 }
 
-/* logo wrapper and image */
-.logo {
-  margin-bottom: 8px;
-  display: block;
-  text-align: center;
-  background: transparent;
-  box-shadow: none;
-  pointer-events: none;
+/* Bounce animation keyframes */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
-.logo-img {
+/* logo element */
+.logo {
   width: 56px;
   height: 56px;
-  object-fit: contain;
-  background: transparent;
-  box-shadow: none;
-  border: none;
-  display: inline-block;
-  image-rendering: auto;
-}
-
-/* independent logo element (not tied to .container) */
-.logo {
-  height: 56px;
   background: url('../assets/whatsapp.png') no-repeat center/contain;
-  margin: -36px auto 8px; /* pulls the logo above the title and slightly out of the container */
+  margin: -36px auto 8px;
   display: block;
   pointer-events: none;
-  animation: bounce 1.5s infinite;
+  animation: bounce 1.5s ease-in-out infinite;
 }
 
 h1 {
