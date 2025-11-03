@@ -19,18 +19,18 @@
     const usernameDisplay = document.getElementById("usernameDisplay");
 
     if (!username) {
-      window.location.href = "/index";
+      window.location.href = "index.html";
     } else {
       usernameDisplay.textContent = "Logged in as: " + username;
     }
 
     document.getElementById("logoutBtn").addEventListener("click", () => {
       localStorage.removeItem("loggedInUser");
-      window.location.href = "/index";
+      window.location.href = "index.html";
     });
 
     document.getElementById("backBtn").addEventListener("click", () => {
-      window.location.href = "/sender";
+      window.location.href = "sender.html";
     });
   </script>
 </body>

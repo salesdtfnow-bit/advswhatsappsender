@@ -10,7 +10,7 @@ const username = localStorage.getItem('loggedInUser');
 const USER_MSG_KEY = `messages_${username}`;
 const DEFAULT_CODE = '44';
 
-if (!username) window.location.href = '/index';
+if (!username) window.location.href = 'index.html';
 
 let highlightedDiv = null;
 
@@ -158,7 +158,7 @@ sendBtn.addEventListener('click', () => {
 
 // Profile button
 profileBtn.addEventListener('click', () => {
-  window.location.href = '/profile';
+  window.location.href = 'profile.html';
 });
 
 // Initial load
