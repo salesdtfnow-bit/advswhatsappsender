@@ -10,13 +10,16 @@
 
 .container {
   background: white;
-  padding: 3rem 2rem 2rem; /* keep top padding for space above title */
+  padding: 3rem 2.5rem 2.5rem; /* consistent padding */
   border-radius: 40px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   width: 90%;
   max-width: 450px;
   text-align: center;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* Bounce animation keyframes */
