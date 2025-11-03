@@ -1,48 +1,164 @@
-﻿.whatsapp-logo {
-  height: 40px;
-  margin-right: 10px;
-  animation: bounce 1s infinite alternate;
-  vertical-align: middle;
+﻿body {
+  font-family: "Segoe UI", sans-serif;
+  background: #f4f6f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
 }
 
-@keyframes bounce {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-  100% { transform: translateY(0); }
-}
-
-/* Fix floating label on select when value is selected */
-select:focus + label,
-select.filled + label {
-  top: -10px;
-  left: 12px;
-  font-size: 0.8rem;
-  color: #25d366;
+.container {
   background: white;
-  padding: 0 4px;
+  padding: 3rem 2rem 2rem; /* keep top padding for space above title */
+  border-radius: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 450px;
+  text-align: center;
+  position: relative;
 }
 
-/* Add edit/delete buttons for saved messages */
+/* logo wrapper and image */
+.logo {
+  margin-bottom: 8px;
+  display: block;
+  text-align: center;
+  background: transparent;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+.logo-img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  display: inline-block;
+  image-rendering: auto;
+}
+
+/* independent logo element (not tied to .container) */
+.logo {
+  width: 56px;
+  height: 56px;
+  background: url('../assets/whatsapp.png') no-repeat center/contain;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  margin: -36px auto 8px; /* pulls the logo above the title and slightly out of the container */
+  display: block;
+  pointer-events: none;
+}
+
+h1 {
+  margin-top: 0.5rem; /* reduced because logo is now separate element above title */
+  margin-bottom: 1rem;
+  color: #075e54;
+  font-size: 1.8rem;
+}
+
+/* Inputs, textarea, select */
+input, textarea, select {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: 0.2s;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: #25d366;
+  outline: none;
+}
+
+/* Buttons */
+button {
+  background: #25d366;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #20b85c;
+}
+
+/* Button group for Send / Profile */
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+/* Custom message section */
+.custom-message {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+
+/* Saved messages list */
+.saved-messages-list {
+  margin-top: 1rem;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
 .saved-message {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 6px 10px;
-  margin-bottom: 6px;
   background: #f1f1f1;
+  padding: 6px 10px;
   border-radius: 8px;
-  font-size: 0.9rem;
+  margin-bottom: 5px;
+  font-size: 0.95rem;
 }
 
+.saved-message span {
+  cursor: pointer;
+  flex: 1;
+}
+
+/* Edit/Delete buttons inside saved message */
 .saved-message button {
-  padding: 4px 6px;
-  font-size: 0.8rem;
-  margin-left: 5px;
-  background: #128c7e;
-  color: #fff;
-  border-radius: 6px;
+  padding: 4px 8px;
+  border-radius: 5px;
+  border: none;
+  font-size: 0.85rem;
+  cursor: pointer;
 }
 
-.saved-message button:hover {
-  background: #075e54;
+.saved-message button:first-child {
+  background: #ffc107;
+  color: #333;
+}
+
+.saved-message button:last-child {
+  background: #dc3545;
+  color: white;
+}
+
+/* Scrollbar styling for saved messages */
+.saved-messages-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.saved-messages-list::-webkit-scrollbar-thumb {
+  background: #25d366;
+  border-radius: 3px;
+}
+
+.saved-messages-list::-webkit-scrollbar-track {
+  background: #f4f6f9;
 }

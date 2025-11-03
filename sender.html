@@ -8,25 +8,20 @@
 </head>
 <body>
   <div class="container">
-    <h1>
-      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" class="whatsapp-logo" alt="WhatsApp" />
-      WhatsApp Sender
-    </h1>
-
-    <div class="input-group">
-      <input type="text" id="phone" required />
-      <label for="phone">Phone Number</label>
+    <!-- add this so the logo appears above the title -->
+    <div class="logo">
+      <img src="src/assets/whatsapp.png" class="logo-img" />
     </div>
 
-    <div class="input-group">
-      <select id="preset"></select>
-      <label for="preset">Preset Message</label>
-    </div>
+    <h1>WhatsApp Sender</h1>
 
-    <div class="input-group">
-      <textarea id="message"></textarea>
-      <label for="message">Message (optional)</label>
-    </div>
+    <input type="text" id="phone" placeholder="Enter phone number" />
+
+    <select id="preset">
+      <option value="">-- Select a message --</option>
+    </select>
+
+    <textarea id="message" placeholder="Message (optional)"></textarea>
 
     <div class="btn-group">
       <button id="sendBtn">Send WhatsApp</button>
