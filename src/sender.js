@@ -242,8 +242,11 @@ sendBtn.addEventListener('click', (e) => {
     return;
   }
 
-  const message = encodeURIComponent(messageInput.value.trim());
-  const url = `https://wa.me/${formatted}${message ? `?text=${message}` : ''}`;
+  const rawMessage = (messageInput.value || '').trim();
+  // Build query safely so characters are encoded correctly
+  const params = new URLSearchParams();
+  if (rawMessage) params.set('text', rawMessage);
+  const url = `https://wa.me/${formatted}${params.toString() ? `?${params.toString()}` : ''}`;
   try {
     window.open(url, '_blank');
     showToast('Opening WhatsApp...', 'success');
