@@ -1,11 +1,16 @@
 ﻿body {
   font-family: "Segoe UI", sans-serif;
-  background: #f4f6f9;
+  /* soft green-to-light-green background with a subtle glossy highlight */
+  background: 
+    radial-gradient(circle at 50% 8%, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 35%),
+    linear-gradient(180deg, #e6fbec 0%, #f3fff7 45%, #f7fff9 100%);
+  background-attachment: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   margin: 0;
+  color: #0b3a2b; /* darker green-ish text fallback for high contrast */
 }
 
 .container {
@@ -13,7 +18,7 @@
   /* keep a bit more top spacing for the logo/title, but make side/bottom padding consistent */
   padding: 3rem 2.5rem 2.5rem;
   border-radius: 40px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 30px rgba(10, 40, 25, 0.08), inset 0 1px 0 rgba(255,255,255,0.6);
   width: 90%;
   max-width: 520px; /* slightly wider for a modern look */
   text-align: center;
@@ -64,6 +69,15 @@ input, textarea, select {
   box-sizing: border-box;
   background: #fff;
   color: #222;
+}
+
+/* Restrict textarea resizing so it can't be dragged outside the container */
+textarea {
+  resize: vertical; /* allow vertical growth only */
+  max-width: 100%;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 /* phone row: country select + input */

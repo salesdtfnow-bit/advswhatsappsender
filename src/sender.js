@@ -8,6 +8,8 @@ const saveMessageBtn = document.getElementById('saveMessageBtn');
 const profileBtn = document.getElementById('profileBtn');
 const toastContainer = document.getElementById('toast-container');
 const countrySelect = document.getElementById('countrySelect');
+// keep a reference to the Whatsapp tab/window we open so we can update it instead of opening new tabs
+let whatsappWindow = null;
 
 const username = localStorage.getItem('loggedInUser');
 const USER_MSG_KEY = `messages_${username}`;
@@ -253,7 +255,21 @@ sendBtn.addEventListener('click', (e) => {
     ? `https://api.whatsapp.com/send?${params.toString()}`
     : `https://web.whatsapp.com/send?${params.toString()}`;
   try {
-    window.open(url, '_blank');
+    // If we have a previously opened window reference and it's not closed, update its location
+    if (whatsappWindow && !whatsappWindow.closed) {
+      try {
+        whatsappWindow.location.href = url;
+        whatsappWindow.focus();
+      } catch (e) {
+        // if cross-origin prevents direct location write, fallback to opening by name
+        whatsappWindow = window.open(url, 'whatsapp_window');
+        if (whatsappWindow) whatsappWindow.focus();
+      }
+    } else {
+      // open (or reuse an existing tab with this name) so subsequent sends reuse the same tab
+      whatsappWindow = window.open(url, 'whatsapp_window');
+      if (whatsappWindow) whatsappWindow.focus();
+    }
     showToast('Opening WhatsApp...', 'success');
   } catch (err) {
     showToast('Unable to open WhatsApp', 'error');
