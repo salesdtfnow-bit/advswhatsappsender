@@ -243,10 +243,15 @@ sendBtn.addEventListener('click', (e) => {
   }
 
   const rawMessage = (messageInput.value || '').trim();
-  // Build query safely so characters are encoded correctly
+  // Choose endpoint: web.whatsapp.com on desktop to open compose directly (bypasses wa.me interstitial),
+  // and api.whatsapp.com on mobile which opens the native app or mobile web.
+  const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || '');
   const params = new URLSearchParams();
+  params.set('phone', formatted);
   if (rawMessage) params.set('text', rawMessage);
-  const url = `https://wa.me/${formatted}${params.toString() ? `?${params.toString()}` : ''}`;
+  const url = isMobile
+    ? `https://api.whatsapp.com/send?${params.toString()}`
+    : `https://web.whatsapp.com/send?${params.toString()}`;
   try {
     window.open(url, '_blank');
     showToast('Opening WhatsApp...', 'success');
