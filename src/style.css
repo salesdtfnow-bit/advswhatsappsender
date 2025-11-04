@@ -66,6 +66,24 @@ input, textarea, select {
   color: #222;
 }
 
+/* phone row: country select + input */
+.phone-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  width: 100%;
+}
+
+.phone-row select {
+  width: 140px;
+  max-width: 40%;
+  padding: 12px 8px;
+}
+
+.phone-row input {
+  flex: 1 1 auto;
+}
+
 input:focus, textarea:focus, select:focus {
   border-color: #25d366;
   outline: none;
@@ -242,4 +260,6 @@ h1 {
   .btn-group > button { width: 100%; }
   .custom-message { gap: 0.5rem; }
   .container { padding: 2.25rem 1.25rem; }
+  .phone-row { flex-direction: column; }
+  .phone-row select { width: 100%; max-width: none; }
 }

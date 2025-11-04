@@ -7,10 +7,17 @@ const newMessageInput = document.getElementById('newMessage');
 const saveMessageBtn = document.getElementById('saveMessageBtn');
 const profileBtn = document.getElementById('profileBtn');
 const toastContainer = document.getElementById('toast-container');
+const countrySelect = document.getElementById('countrySelect');
 
 const username = localStorage.getItem('loggedInUser');
 const USER_MSG_KEY = `messages_${username}`;
 const DEFAULT_CODE = '44';
+
+// Basic country codes list used for detection (no external library)
+// Keep codes as strings; longer codes should be checked first to avoid prefix collisions
+const KNOWN_COUNTRY_CODES = [
+  '91','61','55','44','49','33','27','1'
+];
 
 if (!username) window.location.href = 'index.html';
 
@@ -169,26 +176,46 @@ function showToast(text, type = 'success', timeout = 3500) {
 // phone formatter / validator
 function formatPhoneToE164(value) {
   if (!value) return null;
-  // remove all non-digit characters and leading +
-  let digits = value.replace(/[^0-9+]/g, '');
-  digits = digits.replace(/^\+/, '');
+  // remove whitespace and keep leading + if present
+  let raw = (value || '').trim();
+  raw = raw.replace(/\s+/g, '');
 
-  // if number starts with 00 (international prefix), remove the leading zeros
-  if (digits.startsWith('00')) digits = digits.replace(/^0+/, '');
-
-  // strip any non-digits now
-  digits = digits.replace(/\D/g, '');
-
-  // basic length checks
-  if (digits.length < 8) return null; // too short
-  if (digits.length > 15) return null; // too long / invalid
-
-  // if it looks like a local number (8-10 digits) and doesn't start with DEFAULT_CODE, prepend default
-  if (!digits.startsWith(DEFAULT_CODE) && digits.length <= 10) {
-    digits = DEFAULT_CODE + digits.replace(/^0+/, '');
+  // If user included a leading + or 00, treat as full international number and try to use as-is
+  if (raw.startsWith('+') || raw.startsWith('00')) {
+    let digits = raw.replace(/^\+/, '').replace(/^00+/, '');
+    digits = digits.replace(/\D/g, '');
+    if (digits.length < 8 || digits.length > 15) return null;
+    return digits;
   }
 
-  return digits;
+  // otherwise assume local-ish number: strip non-digits and leading zeros then prepend selected country code
+  let digits = raw.replace(/\D/g, '');
+  digits = digits.replace(/^0+/, '');
+  if (!digits) return null;
+  // if digits already include a known country prefix, accept it
+  for (const code of KNOWN_COUNTRY_CODES) {
+    if (digits.startsWith(code) && digits.length > code.length) {
+      if (digits.length >= 8 && digits.length <= 15) return digits;
+    }
+  }
+
+  // fallback: use selected countrySelect value or DEFAULT_CODE
+  const cc = (countrySelect && countrySelect.value) ? countrySelect.value : DEFAULT_CODE;
+  const combined = `${cc}${digits}`;
+  if (combined.length < 8 || combined.length > 15) return null;
+  return combined;
+}
+
+// detect a country code from a digits-only string. Returns code or null.
+function detectCountryFromDigits(digitsOnly) {
+  if (!digitsOnly) return null;
+  const digits = digitsOnly.replace(/\D/g, '');
+  // check longer codes first
+  const sorted = KNOWN_COUNTRY_CODES.slice().sort((a,b) => b.length - a.length);
+  for (const code of sorted) {
+    if (digits.startsWith(code)) return code;
+  }
+  return null;
 }
 
 // clear error
@@ -225,6 +252,27 @@ sendBtn.addEventListener('click', (e) => {
   }
 });
 
+// Auto-detect country when user types an international prefix (+ or 00)
+if (phoneInput && countrySelect) {
+  phoneInput.addEventListener('input', (e) => {
+    const v = (e.target.value || '').trim();
+    if (!v) return;
+    let normalized = v.replace(/[^0-9+]/g, '');
+    if (normalized.startsWith('+')) normalized = normalized.slice(1);
+    else if (normalized.startsWith('00')) normalized = normalized.replace(/^00+/, '');
+    else return; // only attempt detection when user types international prefixes
+
+    const detected = detectCountryFromDigits(normalized);
+    if (detected) {
+      // set dropdown to detected country
+      countrySelect.value = detected;
+      // remove detected prefix from the phone field to show local portion
+      const remainder = normalized.slice(detected.length).replace(/^0+/, '');
+      phoneInput.value = remainder;
+    }
+  });
+}
+
 // Profile button
 profileBtn.addEventListener('click', () => {
   window.location.href = 'profile.html';
@@ -232,3 +280,7 @@ profileBtn.addEventListener('click', () => {
 
 // Initial load
 loadUserMessages();
+// ensure countrySelect defaults to DEFAULT_CODE if present
+if (countrySelect) {
+  countrySelect.value = DEFAULT_CODE;
+}
