@@ -255,22 +255,20 @@ sendBtn.addEventListener('click', (e) => {
     ? `https://api.whatsapp.com/send?${params.toString()}`
     : `https://web.whatsapp.com/send?${params.toString()}`;
   try {
-    // If we have a previously opened window reference and it's not closed, update its location
-    if (whatsappWindow && !whatsappWindow.closed) {
-      try {
-        whatsappWindow.location.href = url;
-        whatsappWindow.focus();
-      } catch (e) {
-        // if cross-origin prevents direct location write, fallback to opening by name
-        whatsappWindow = window.open(url, 'whatsapp_window');
-        if (whatsappWindow) whatsappWindow.focus();
-      }
+    // Always open by a fixed window name. Browsers will reuse an existing tab/window
+    // with the same name if it was previously opened by window.open with that name.
+    // This is the most reliable cross-browser approach. Note: we cannot control or
+    // update tabs that the user opened manually (they must have been opened by this
+    // script with the same name to be reused).
+    const win = window.open(url, 'whatsapp_window');
+    if (win) {
+      try { win.focus(); } catch (e) { /* ignore focus errors */ }
+      // keep reference so next clicks can try to reuse
+      whatsappWindow = win;
+      showToast('Opening WhatsApp...', 'success');
     } else {
-      // open (or reuse an existing tab with this name) so subsequent sends reuse the same tab
-      whatsappWindow = window.open(url, 'whatsapp_window');
-      if (whatsappWindow) whatsappWindow.focus();
+      showToast('Popup blocked. Please allow popups for this site.', 'error');
     }
-    showToast('Opening WhatsApp...', 'success');
   } catch (err) {
     showToast('Unable to open WhatsApp', 'error');
   }
