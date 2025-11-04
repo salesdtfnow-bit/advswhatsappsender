@@ -13,7 +13,8 @@
 
     <h1>WhatsApp Sender</h1>
 
-    <input type="text" id="phone" placeholder="Enter phone number" />
+  <input type="text" id="phone" placeholder="Enter phone number" aria-describedby="phoneError" />
+  <div id="phoneError" class="field-error" aria-live="polite"></div>
 
     <select id="preset">
       <option value="">-- Select a message --</option>
@@ -31,6 +32,9 @@
       <button id="saveMessageBtn">Save</button>
     </div>
   </div>
+
+  <!-- toast container -->
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
 
   <script src="src/sender.js"></script>
 </body>

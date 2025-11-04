@@ -1,10 +1,12 @@
 const sendBtn = document.getElementById('sendBtn');
 const phoneInput = document.getElementById('phone');
+const phoneError = document.getElementById('phoneError');
 const messageInput = document.getElementById('message');
 const presetSelect = document.getElementById('preset');
 const newMessageInput = document.getElementById('newMessage');
 const saveMessageBtn = document.getElementById('saveMessageBtn');
 const profileBtn = document.getElementById('profileBtn');
+const toastContainer = document.getElementById('toast-container');
 
 const username = localStorage.getItem('loggedInUser');
 const USER_MSG_KEY = `messages_${username}`;
@@ -135,25 +137,92 @@ presetSelect.addEventListener('change', () => {
 // Save new custom message
 saveMessageBtn.addEventListener('click', () => {
   const msg = newMessageInput.value.trim();
-  if (!msg) return alert('Enter a message!');
+  if (!msg) {
+    showToast('Enter a message to save', 'error');
+    newMessageInput.focus();
+    return;
+  }
   let saved = JSON.parse(localStorage.getItem(USER_MSG_KEY)) || [];
   saved.unshift(msg);
   if (saved.length > 10) saved.pop();
   localStorage.setItem(USER_MSG_KEY, JSON.stringify(saved));
   newMessageInput.value = '';
   loadUserMessages();
-  alert('Message saved!');
+  showToast('Message saved', 'success');
 });
 
 // Send WhatsApp
-sendBtn.addEventListener('click', () => {
-  let phone = phoneInput.value.replace(/\D/g, '');
-  if (!phone) return alert('Please enter a phone number!');
-  if (phone.startsWith('0')) phone = phone.slice(1);
-  if (!phone.startsWith(DEFAULT_CODE)) phone = DEFAULT_CODE + phone;
+// small helper: show toast
+function showToast(text, type = 'success', timeout = 3500) {
+  if (!toastContainer) return;
+  const t = document.createElement('div');
+  t.className = `toast toast--${type}`;
+  t.textContent = text;
+  toastContainer.appendChild(t);
+  const id = setTimeout(() => {
+    t.style.animation = 'toast-out 160ms ease forwards';
+    setTimeout(() => t.remove(), 180);
+    clearTimeout(id);
+  }, timeout);
+}
+
+// phone formatter / validator
+function formatPhoneToE164(value) {
+  if (!value) return null;
+  // remove all non-digit characters and leading +
+  let digits = value.replace(/[^0-9+]/g, '');
+  digits = digits.replace(/^\+/, '');
+
+  // if number starts with 00 (international prefix), remove the leading zeros
+  if (digits.startsWith('00')) digits = digits.replace(/^0+/, '');
+
+  // strip any non-digits now
+  digits = digits.replace(/\D/g, '');
+
+  // basic length checks
+  if (digits.length < 8) return null; // too short
+  if (digits.length > 15) return null; // too long / invalid
+
+  // if it looks like a local number (8-10 digits) and doesn't start with DEFAULT_CODE, prepend default
+  if (!digits.startsWith(DEFAULT_CODE) && digits.length <= 10) {
+    digits = DEFAULT_CODE + digits.replace(/^0+/, '');
+  }
+
+  return digits;
+}
+
+// clear error
+function setPhoneError(msg) {
+  if (!phoneError) return;
+  phoneError.textContent = msg || '';
+}
+
+sendBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  setPhoneError('');
+  const raw = (phoneInput.value || '').trim();
+  const formatted = formatPhoneToE164(raw);
+  if (!raw) {
+    setPhoneError('Please enter a phone number');
+    showToast('Please enter a phone number', 'error');
+    phoneInput.focus();
+    return;
+  }
+  if (!formatted) {
+    setPhoneError('Invalid phone number. Include country code if needed.');
+    showToast('Invalid phone number', 'error');
+    phoneInput.focus();
+    return;
+  }
+
   const message = encodeURIComponent(messageInput.value.trim());
-  const url = `https://wa.me/${phone}${message ? `?text=${message}` : ''}`;
-  window.open(url, '_blank');
+  const url = `https://wa.me/${formatted}${message ? `?text=${message}` : ''}`;
+  try {
+    window.open(url, '_blank');
+    showToast('Opening WhatsApp...', 'success');
+  } catch (err) {
+    showToast('Unable to open WhatsApp', 'error');
+  }
 });
 
 // Profile button

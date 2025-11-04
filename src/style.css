@@ -189,3 +189,57 @@ h1 {
 .saved-messages-list::-webkit-scrollbar-track {
   background: #f4f6f9;
 }
+
+/* field error (inline) */
+.field-error {
+  color: #d93025;
+  font-size: 0.9rem;
+  margin-top: 6px;
+  min-height: 1.2rem;
+}
+
+/* Toast notifications */
+#toast-container {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  min-width: 220px;
+  max-width: 360px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 10px 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  color: #111;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(-6px) scale(0.98);
+  animation: toast-in 240ms ease forwards;
+}
+
+.toast--success { border-left: 4px solid #25d366; }
+.toast--error { border-left: 4px solid #d93025; }
+
+@keyframes toast-in {
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes toast-out {
+  to { opacity: 0; transform: translateY(-8px) scale(0.98); }
+}
+
+/* Responsive behavior: stack buttons on small screens */
+@media (max-width: 480px) {
+  .btn-group { flex-direction: column; gap: 0.75rem; }
+  .btn-group > button { width: 100%; }
+  .custom-message { gap: 0.5rem; }
+  .container { padding: 2.25rem 1.25rem; }
+}
